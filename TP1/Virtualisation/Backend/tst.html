@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Exemple Front-End</title>
+    <style>
+      /* Un peu de style rapide pour la présentation */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      button {
+        margin: 10px 0;
+        padding: 8px 16px;
+        cursor: pointer;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        background-color: #f2f2f2;
+        margin: 5px 0;
+        padding: 8px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Gestion des Personnes</h1>
+
+    <section>
+      <h2>Liste des élèves</h2>
+      <button onclick="getEleves()">Récupérer les élèves</button>
+      <ul id="liste-eleves"></ul>
+    </section>
+
+    <section>
+      <h2>Liste des professeurs</h2>
+      <button onclick="getProfesseurs()">Récupérer les professeurs</button>
+      <ul id="liste-professeurs"></ul>
+    </section>
+
+    <script>
+      // Fonction pour récupérer la liste des élèves
+      function getEleves() {
+        fetch('http://localhost:3000/eleves')
+          .then(response => response.json())
+          .then(data => {
+            const listeEleves = document.getElementById('liste-eleves');
+            // On vide la liste avant de la remplir
+            listeEleves.innerHTML = '';
+
+            data.forEach(eleve => {
+              const li = document.createElement('li');
+              // Adaptez les champs selon votre modèle (nom, prénom, etc.)
+              li.textContent = `ID: ${eleve.id} - Nom: ${eleve.nom} - Prénom: ${eleve.prenom}`;
+              listeEleves.appendChild(li);
+            });
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+          });
+      }
+
+      // Fonction pour récupérer la liste des professeurs
+      function getProfesseurs() {
+        fetch('http://localhost:3000/professeurs')
+          .then(response => response.json())
+          .then(data => {
+            const listeProfesseurs = document.getElementById('liste-professeurs');
+            // On vide la liste avant de la remplir
+            listeProfesseurs.innerHTML = '';
+
+            data.forEach(prof => {
+              const li = document.createElement('li');
+              // Adaptez les champs selon votre modèle
+              li.textContent = `ID: ${prof.id} - Nom: ${prof.nom} - Prénom: ${prof.prenom}`;
+              listeProfesseurs.appendChild(li);
+            });
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+          });
+      }
+    </script>
+  </body>
+</html>
